@@ -14,6 +14,7 @@ function App() {
   const [isPaused, setIsPaused] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [sceneProgress, setSceneProgress] = useState(0);
+  const [questionTimeLeft, setQuestionTimeLeft] = useState(30);
 
   const audioRef = useRef(null);
   const effectAudioRef = useRef(null);
@@ -21,6 +22,7 @@ function App() {
   const timeoutRef = useRef(null);
   const sceneStartRef = useRef(null);
   const remainingTimeRef = useRef(null);
+  const audioUnlockedRef = useRef(false);
 
   const currentQuizMeta = quizMeta[selectedQuizIndex];
   const quizData = currentQuizMeta.quiz;
@@ -72,7 +74,9 @@ function App() {
       audio.volume = volume;
       audio.muted = isMuted;
       effectAudioRef.current = audio;
-      audio.play().catch(() => {});
+      audio.play().catch((error) => {
+        console.error("Effect audio play blocked:", error);
+      });
     } catch (error) {
       console.error(error);
     }
@@ -111,10 +115,32 @@ function App() {
     }, 250);
   };
 
+  const unlockAudio = async () => {
+    if (audioUnlockedRef.current) return true;
+
+    try {
+      const audio = new Audio();
+      audio.muted = true;
+      audio.volume = 0;
+      audio.src =
+        "data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAFAAAGhgBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=";
+
+      await audio.play();
+      audio.pause();
+      audio.currentTime = 0;
+
+      audioUnlockedRef.current = true;
+      return true;
+    } catch (error) {
+      console.error("Audio unlock failed:", error);
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (phase !== "countdown") return;
 
-    if (countdown > 0) {
+    if (countdown === 3) {
       playEffect("/audio/effects/countdown.mp3", 0.7);
     }
 
@@ -175,7 +201,8 @@ function App() {
       }, 350);
     };
 
-    audio.play().catch(() => {
+    audio.play().catch((error) => {
+      console.error("Scene audio play blocked:", error);
       setIsPlaying(false);
       setIsPaused(false);
     });
@@ -201,7 +228,8 @@ function App() {
       clearTimers();
     };
 
-    audio.play().catch(() => {
+    audio.play().catch((error) => {
+      console.error("Stay audio play blocked:", error);
       setIsPlaying(false);
       setIsPaused(false);
     });
@@ -254,14 +282,42 @@ function App() {
   useEffect(() => {
     if (phase !== "question") return;
 
-    playEffect("/audio/effects/question.mp3", 0.75);
+    setQuestionTimeLeft(30);
 
-    if (!quizData.question.audio) return;
+    playEffect("/audio/effects/question.mp3", 0.5);
 
-    playAudioAndStay(quizData.question.audio);
+    const timerSound = window.setTimeout(() => {
+      playEffect("/audio/effects/timer.mp3", 0.75);
+    }, 500);
 
-    return stopAudio;
+    if (quizData.question.audio) {
+      playAudioAndStay(quizData.question.audio);
+    }
+
+    return () => {
+      window.clearTimeout(timerSound);
+      stopAudio();
+    };
   }, [phase, isMuted, selectedQuizIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (phase !== "question") return;
+
+    setQuestionTimeLeft(30);
+
+    const interval = window.setInterval(() => {
+      setQuestionTimeLeft((prev) => {
+        if (prev <= 1) {
+          window.clearInterval(interval);
+          setPhase("explanation");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [phase, selectedQuizIndex, currentStep]);
 
   useEffect(() => {
     if (phase !== "reaction") return;
@@ -294,18 +350,20 @@ function App() {
     setSceneProgress(0);
     setIsPaused(false);
     setIsPlaying(false);
+    setQuestionTimeLeft(30);
   };
 
-  const startQuiz = (quizIndex) => {
+  const startQuiz = async (quizIndex) => {
+    await unlockAudio();
     resetQuizState();
     setSelectedQuizIndex(quizIndex);
     setPhase("countdown");
   };
 
-  const startRandomQuiz = () => {
+  const startRandomQuiz = async () => {
     const randomIndex = Math.floor(Math.random() * quizMeta.length);
     setIntroMode("home");
-    startQuiz(randomIndex);
+    await startQuiz(randomIndex);
   };
 
   const handleChoiceClick = (choice) => {
@@ -701,6 +759,14 @@ function App() {
 
               <h2>{quizData.question.prompt}</h2>
 
+              <div className="question-timer">
+                <span className="question-timer-label">
+                  <ruby>残<rt>のこ</rt></ruby>り
+                  <ruby>時間<rt>じかん</rt></ruby>
+                </span>
+                <span className="question-timer-value">{questionTimeLeft}</span>
+              </div>
+
               <div className="question-actions">
                 <div className="reaction-buttons">
                   <button className="sub-button" onClick={togglePause}>
@@ -804,7 +870,7 @@ function App() {
                 <p>{quizData.explanation.intro}</p>
               </div>
 
-              {selectedChoice && (
+              {selectedChoice ? (
                 <div className="selected-answer-box">
                   <div className="selected-answer-label">
                     あなたが
@@ -812,6 +878,20 @@ function App() {
                     <ruby>返答<rt>へんとう</rt></ruby>
                   </div>
                   <p>{selectedChoice.text}</p>
+                </div>
+              ) : (
+                <div className="selected-answer-box">
+                  <div className="selected-answer-label">
+                    <ruby>回答<rt>かいとう</rt></ruby>なし
+                  </div>
+                  <p>
+                    30<ruby>秒<rt>びょう</rt></ruby>
+                    <ruby>以内<rt>いない</rt></ruby>に
+                    <ruby>選択<rt>せんたく</rt></ruby>がなかったため、
+                    <ruby>自動<rt>じどう</rt></ruby>で
+                    <ruby>解説<rt>かいせつ</rt></ruby>へ
+                    <ruby>進<rt>すす</rt></ruby>みました。
+                  </p>
                 </div>
               )}
 
@@ -838,6 +918,7 @@ function App() {
                 <button
                   className="sub-button"
                   onClick={() => setPhase("reaction")}
+                  disabled={!selectedChoice}
                 >
                   リアクションに
                   <ruby>戻<rt>もど</rt></ruby>る
