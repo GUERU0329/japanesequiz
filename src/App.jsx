@@ -748,24 +748,38 @@ function App() {
         {phase === "question" && (
           <div className="question-screen">
             <div className="question-card">
-              <div className="question-top">
-                <div className="question-header">Q</div>
-                {isPlaying && (
-                  <div className="now-playing question-playing">
-                    Now Playing
-                  </div>
-                )}
-              </div>
+<div className="question-top">
+  <div className="question-header">Q</div>
+
+  <div className="question-top-right">
+    <div className="question-timer-inline">
+      <span className="question-timer-inline-label">
+        <ruby>残<rt>のこ</rt></ruby>り
+        <ruby>時間<rt>じかん</rt></ruby>
+      </span>
+
+      <div className="question-timer-bar">
+        <div
+          className="question-timer-bar-fill"
+          style={{ width: `${(questionTimeLeft / 30) * 100}%` }}
+        />
+      </div>
+
+      <span className="question-timer-inline-seconds">
+        {questionTimeLeft}s
+      </span>
+    </div>
+
+    {isPlaying && (
+      <div className="now-playing question-playing">
+        Now Playing
+      </div>
+    )}
+  </div>
+</div>
 
               <h2>{quizData.question.prompt}</h2>
 
-              <div className="question-timer">
-                <span className="question-timer-label">
-                  <ruby>残<rt>のこ</rt></ruby>り
-                  <ruby>時間<rt>じかん</rt></ruby>
-                </span>
-                <span className="question-timer-value">{questionTimeLeft}</span>
-              </div>
 
               <div className="question-actions">
                 <div className="reaction-buttons">
