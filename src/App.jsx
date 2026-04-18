@@ -284,7 +284,7 @@ function App() {
 
     setQuestionTimeLeft(30);
 
-    playEffect("/audio/effects/question.mp3", 0.5);
+    playEffect("/audio/effects/question.mp3", 0.2);
 
     const timerSound = window.setTimeout(() => {
       playEffect("/audio/effects/timer.mp3", 0.75);
