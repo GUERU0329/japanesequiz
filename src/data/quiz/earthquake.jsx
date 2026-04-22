@@ -324,9 +324,7 @@
           <ruby>形<rt>かたち</rt></ruby>です。
           つまり
           「AしてもBだ」は、
-          「Aという
-          <ruby>条件<rt>じょうけん</rt></ruby>を
-          置<rt>お</rt>いても、
+          「もしもAしたとしても、
           <ruby>結論<rt>けつろん</rt></ruby>は
           Bのまま
           <ruby>変<rt>か</rt></ruby>わらない」
