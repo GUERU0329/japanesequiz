@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import "./App.css";
 import quizMeta from "./data/quizMeta.jsx";
@@ -783,12 +783,6 @@ function App() {
 
               <div className="question-actions">
                 <div className="reaction-buttons">
-                  <button className="sub-button" onClick={togglePause}>
-                    {isPaused ? "▶" : "⏸"}
-                  </button>
-                  <button className="sub-button" onClick={toggleMute}>
-                    {isMuted ? "🔇" : "🔊"}
-                  </button>
                   <button className="sub-button" onClick={replayCurrentAudio}>
                     もういちどきく
                   </button>
@@ -838,7 +832,7 @@ function App() {
                   <div className="thought-label">
                     <ruby>受<rt>う</rt></ruby>け
                     <ruby>手<rt>て</rt></ruby>の
-                    <ruby>内心<rt>ないしん</rt></ruby>
+                    <ruby>印象<rt>いんしょう</rt></ruby>
                   </div>
                   <div className="thought-box">
                     <p>{selectedChoice.reaction.thought}</p>

@@ -1,6 +1,7 @@
 import cafeQuiz from "./quiz/cafeQuiz.jsx";
 import cakeShopQuiz from "./quiz/cakeShopQuiz.jsx";
 import coloradoSnowQuiz from "./quiz/coloradoSnowQuiz.jsx";
+import earthquakeQuiz from "./quiz/earthquake.jsx";
 
 const quizMeta = [
   {
@@ -20,6 +21,12 @@ const quizMeta = [
     title: coloradoSnowQuiz.title,
     description: coloradoSnowQuiz.description,
     quiz: coloradoSnowQuiz,
+  },
+      {
+    id: earthquakeQuiz.id,
+    title: earthquakeQuiz.title,
+    description: earthquakeQuiz.description,
+    quiz: earthquakeQuiz,
   },
 ];
 
