@@ -12,7 +12,7 @@ function HomePage() {
       <section className="review-hero">
         <div>
           <p className="eyebrow">Avery's Japanese Learning App</p>
-          <h1>日本語レッスン復習アプリ</h1>
+          <h1>にほんごがくしゅうちょう</h1>
           <p>レッスンごとの学習内容、間違い、クイズを一か所で確認できます。</p>
         </div>
         <div className="app-stat-grid" aria-label="学習状況">
