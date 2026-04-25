@@ -291,7 +291,7 @@ meaning: (
               この<ruby>音<rt>おと</rt></ruby>、うざいね。
             </>,
             <>
-              この<ruby>音<rt>おと</rt></ruby>、のにね。
+              この<ruby>音<rt>おと</rt></ruby>、うるさいかな。
             </>,
           ],
           answerIndex: 0,
