@@ -1042,61 +1042,212 @@ const lesson428 = {
       items: yatsuGapColumnItems,
     },
   ],
- 
-  mistakes: [
+
+quiz: {
+  title: (
+    <>
+      <ruby>今日<rt>きょう</rt></ruby>のクイズ
+    </>
+  ),
+  description: (
+    <>
+      「やつ」を
+      どんな
+      <ruby>場面<rt>ばめん</rt></ruby>で
+      <ruby>使<rt>つか</rt></ruby>うと
+      <ruby>違和感<rt>いわかん</rt></ruby>が
+      <ruby>出<rt>で</rt></ruby>やすいか、
+      また
+      どう
+      <ruby>言<rt>い</rt></ruby>い
+      <ruby>換<rt>か</rt></ruby>えると
+      <ruby>自然<rt>しぜん</rt></ruby>かを
+      <ruby>確認<rt>かくにん</rt></ruby>します。
+    </>
+  ),
+  questions: [
+
     {
-      id: "yatsu-too-rough",
-      label: (
+      prompt: (
         <>
-
+          <ruby>友達<rt>ともだち</rt></ruby>を
+          ほめたい
+          とき、
+          もっとも
+          <ruby>自然<rt>しぜん</rt></ruby>なのはどれ？
         </>
       ),
-      saidLabel: "言っていた文",
-      naturalLabel: "自然な文",
-      said: (
+      choices: [
+        "Averyはやさしいやつだね。",
+        "Averyはやさしい人だね。",
+        "Averyってやつはやさしいね。",
+      ],
+      answerIndex: 1,
+      explanation: (
         <>
-
-        </>
-      ),
-      natural: (
-        <>
-
-        </>
-      ),
-      point: (
-        <>
-
+          「やつ」は
+          かなり
+          くだけた
+          <ruby>言<rt>い</rt></ruby>い
+          <ruby>方<rt>かた</rt></ruby>なので、
+          ほめるときでも
+          ぞんざいに
+          <ruby>聞<rt>き</rt></ruby>こえることがあります。
+          <ruby>人<rt>ひと</rt></ruby>を
+          ほめる
+          ときは、
+          「人」の
+          ほうが
+          <ruby>安全<rt>あんぜん</rt></ruby>です。
         </>
       ),
     },
     {
-      id: "yatsu-kedo-not-always",
-      label: (
+      prompt: (
         <>
-
+          コンビニで
+          <ruby>店員<rt>てんいん</rt></ruby>に
+          何かを
+          <ruby>頼<rt>たの</rt></ruby>む
+          とき、
+          もっとも
+          <ruby>自然<rt>しぜん</rt></ruby>なのはどれ？
         </>
       ),
-      saidLabel: "",
-      naturalLabel: "",
-      said: (
+      choices: [
+        "あの赤いやつください。",
+        "あの赤いのをください。",
+        "赤いやつを持ってこい。",
+      ],
+      answerIndex: 1,
+      explanation: (
         <>
-
+          モノに
+          <ruby>使<rt>つか</rt></ruby>う
+          「やつ」は、
+          <ruby>意味<rt>いみ</rt></ruby>は
+          <ruby>通<rt>とお</rt></ruby>っても、
+          <ruby>人<rt>ひと</rt></ruby>によっては
+          ざつに
+          <ruby>聞<rt>き</rt></ruby>こえることがあります。
+          <ruby>店<rt>みせ</rt></ruby>や
+          <ruby>接客<rt>せっきゃく</rt></ruby>の
+          <ruby>場面<rt>ばめん</rt></ruby>では、
+          「の」を
+          <ruby>使<rt>つか</rt></ruby>う
+          ほうが
+          <ruby>安全<rt>あんぜん</rt></ruby>です。
         </>
       ),
-      natural: (
-        <>
+    },
 
+    {
+      prompt: (
+        <>
+          <ruby>次<rt>つぎ</rt></ruby>のうち、
+          いちばん
+          <ruby>不平不満<rt>ふへいふまん</rt></ruby>が
+          <ruby>強<rt>つよ</rt></ruby>く
+          <ruby>出<rt>で</rt></ruby>るのはどれ？
         </>
       ),
-      point: (
+      choices: [
+        "田中が毎回時間通りに来ない。",
+        "田中は毎回時間通りに来ない。",
+        "田中のやつ、毎回時間通りに来ない。",
+      ],
+      answerIndex: 2,
+      explanation: (
         <>
-
+          ⑦の
+          「<ruby>名詞<rt>めいし</rt></ruby> + の + やつ」
+          は、
+          その
+          <ruby>相手<rt>あいて</rt></ruby>に
+          たいする
+          <ruby>不平<rt>ふへい</rt></ruby>・
+          <ruby>不満<rt>ふまん</rt></ruby>・
+          いらだちを
+          付け足す
+          用法です。
         </>
       ),
     },
   ],
+},
+ 
+mistakes: [
+  {
+    id: "missing-no-before-yatsu",
+    label: (
+      <>
+        「の」の<ruby>欠落<rt>けつらく</rt></ruby>
+      </>
+    ),
+    saidLabel: "言っていた文",
+    naturalLabel: "自然な文",
+    said: (
+      <>
+        フラペチーノやつ
+      </>
+    ),
+    natural: (
+      <>
+        フラペチーノのやつ
+      </>
+    ),
+    point: (
+      <>
+        「やつ」は、
+        <ruby>名詞<rt>めいし</rt></ruby>を
+        そのまま
+        つなぐのではなく、
+        「の」で
+        つなぐことが
+        多いです。
+        <br />
+        そのため、
+        「フラペチーノやつ」より
+        「フラペチーノのやつ」の
+        ほうが
+        <ruby>自然<rt>しぜん</rt></ruby>です。
+      </>
+    ),
+  },
+],
   messageFromRyuta: (
     <>
+  <ruby>英語<rt>えいご</rt></ruby>の
+  セクションでは、
+  turquoise や cobbler などの
+  <ruby>知<rt>し</rt></ruby>らない
+  <ruby>単語<rt>たんご</rt></ruby>を
+  <ruby>教<rt>おし</rt></ruby>えてもらえて
+  よかったです。
+  <br />
+  <ruby>日本語<rt>にほんご</rt></ruby>の
+  セクションでは、
+  「やつ」の
+  <ruby>用法<rt>ようほう</rt></ruby>を
+  <ruby>説明<rt>せつめい</rt></ruby>しました。
+  <br />
+  <ruby>全体的<rt>ぜんたいてき</rt></ruby>に、
+  <ruby>文章<rt>ぶんしょう</rt></ruby>の
+  <ruby>組<rt>く</rt></ruby>み
+  <ruby>立<rt>た</rt></ruby>てが
+  うまいなと
+  <ruby>思<rt>おも</rt></ruby>いました。
+  <br />
+  「の」「を」「は」などの
+  <ruby>助詞<rt>じょし</rt></ruby>の
+  <ruby>使<rt>つか</rt></ruby>い
+  <ruby>方<rt>かた</rt></ruby>を
+  <ruby>意識<rt>いしき</rt></ruby>して
+  <ruby>勉強<rt>べんきょう</rt></ruby>すると、
+  もっと
+  <ruby>日本語<rt>にほんご</rt></ruby>が
+  うまくなると
+  <ruby>思<rt>おも</rt></ruby>います！
 
     </>
   ),
