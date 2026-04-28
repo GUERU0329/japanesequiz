@@ -24,6 +24,91 @@ function ReviewPage() {
     ? quizMeta.find((quiz) => quiz.id === session.scenarioQuizId)
     : null;
 
+  const renderExample = (example, exampleIndex) => (
+    <div key={exampleIndex} className="learning-example">
+      {example.label && <span className="learning-example-label">{example.label}</span>}
+      {example.text ?? example}
+      {example.meaning && (
+        <span className="learning-example-meaning">= {example.meaning}</span>
+      )}
+    </div>
+  );
+
+  const renderLearningItem = (item) => (
+    <article
+      key={item.id}
+      className={`learning-card learning-card-${item.id} ${item.featured ? "featured-learning-card" : ""} ${item.children ? "parent-learning-card" : ""}`.trim()}
+    >
+      <h3>{item.title}</h3>
+      <p>{item.body}</p>
+      {item.quickPoints && (
+        <div className="quick-points-grid">
+          {item.quickPoints.map((point) => (
+            <div key={point.label} className="quick-point-card">
+              <span className="quick-point-label">{point.label}</span>
+              <div className="quick-point-value">{point.value}</div>
+            </div>
+          ))}
+        </div>
+      )}
+      {item.summaryTable ? (
+        renderSummaryTable(item.summaryTable)
+      ) : item.examples ? (
+        <div className="learning-example-list">
+          {item.examples.map(renderExample)}
+        </div>
+      ) : (
+        <div className="learning-example">{item.example}</div>
+      )}
+      {item.children && (
+        <div className="child-learning-grid">
+          {item.children.map((child) => (
+            <article key={child.id} className="learning-card child-learning-card">
+              <h3>{child.title}</h3>
+              <p>{child.body}</p>
+              {child.examples ? (
+                <div className="learning-example-list">
+                  {child.examples.map(renderExample)}
+                </div>
+              ) : (
+                <div className="learning-example">{child.example}</div>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
+    </article>
+  );
+
+  const renderSummaryTable = (table) => (
+    <div className="learning-summary-table" role="table" aria-label={table.ariaLabel}>
+      <div className="learning-summary-table-header" role="rowgroup">
+        <div role="row" className="learning-summary-table-row learning-summary-table-row-header">
+          {table.columns.map((column) => (
+            <div key={column.key} role="columnheader" className="learning-summary-table-cell">
+              {column.label}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="learning-summary-table-body" role="rowgroup">
+        {table.rows.map((row, rowIndex) => (
+          <div key={rowIndex} role="row" className="learning-summary-table-row">
+            <div role="cell" className="learning-summary-table-cell learning-summary-table-parent">
+              {row.parent}
+            </div>
+            <div role="cell" className="learning-summary-table-cell">
+              {row.category}
+            </div>
+            <div role="cell" className="learning-summary-table-cell">
+              {row.examples}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <main className="review-app review-page">
       <header className="app-topbar">
@@ -65,29 +150,47 @@ function ReviewPage() {
           <h2><ruby>学習内容<rt>がくしゅうないよう</rt></ruby></h2>
         </div>
 
-        <div className="learning-grid">
-          {session.learningItems.map((item) => (
-            <article key={item.id} className="learning-card">
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-              {item.examples ? (
-                <div className="learning-example-list">
-                  {item.examples.map((example, exampleIndex) => (
-                    <div key={exampleIndex} className="learning-example">
-                      {example.label && <span className="learning-example-label">{example.label}</span>}
-                      {example.text ?? example}
-                      {example.meaning && (
-                        <span className="learning-example-meaning">= {example.meaning}</span>
-                      )}
-                    </div>
-                  ))}
+        {session.learningSections ? (
+          <div className="learning-section-list">
+            {session.learningSections.map((learningSection) => (
+              <section
+                key={learningSection.id}
+                className={`learning-section-card ${learningSection.layout ?? ""}`.trim()}
+              >
+                <div className="learning-section-header">
+                  <div>
+                    {learningSection.kicker && (
+                      <span className="learning-section-kicker">{learningSection.kicker}</span>
+                    )}
+                    <h3>{learningSection.title}</h3>
+                  </div>
+                  {learningSection.description && (
+                    <p className="learning-section-description">{learningSection.description}</p>
+                  )}
                 </div>
-              ) : (
-                <div className="learning-example">{item.example}</div>
-              )}
-            </article>
-          ))}
-        </div>
+
+                {learningSection.highlight && (
+                  <div className="learning-section-highlight">
+                    {learningSection.highlight.label && (
+                      <span className="learning-section-highlight-label">
+                        {learningSection.highlight.label}
+                      </span>
+                    )}
+                    <p>{learningSection.highlight.body}</p>
+                  </div>
+                )}
+
+                <div className="learning-grid">
+                  {learningSection.items.map(renderLearningItem)}
+                </div>
+              </section>
+            ))}
+          </div>
+        ) : (
+          <div className="learning-grid">
+            {session.learningItems.map(renderLearningItem)}
+          </div>
+        )}
 
         {session.advancedLearning && (
           <aside className="advanced-learning-card">
@@ -96,15 +199,7 @@ function ReviewPage() {
               <p>{session.advancedLearning.body}</p>
             </div>
             <div className="learning-example-list">
-              {session.advancedLearning.examples.map((example, exampleIndex) => (
-                <div key={exampleIndex} className="learning-example">
-                  {example.label && <span className="learning-example-label">{example.label}</span>}
-                  {example.text}
-                  {example.meaning && (
-                    <span className="learning-example-meaning">= {example.meaning}</span>
-                  )}
-                </div>
-              ))}
+              {session.advancedLearning.examples.map(renderExample)}
             </div>
           </aside>
         )}
