@@ -24,20 +24,453 @@ function ReviewPage() {
     ? quizMeta.find((quiz) => quiz.id === session.scenarioQuizId)
     : null;
 
-  const renderExample = (example, exampleIndex) => (
-    <div key={exampleIndex} className="learning-example">
-      {example.label && <span className="learning-example-label">{example.label}</span>}
-      {example.text ?? example}
-      {example.meaning && (
-        <span className="learning-example-meaning">= {example.meaning}</span>
+  const TwoLevelPitchGraph = ({ pitchUnits, pitchLevels, movement, focusIndex, accent, tone }) => {
+    if (!pitchUnits || !pitchLevels) return null;
+
+    const count = Math.min(pitchUnits.length, pitchLevels.length);
+    if (count === 0) return null;
+
+    const safeUnits = pitchUnits.slice(0, count);
+    const safeLevels = pitchLevels.slice(0, count);
+    const safeFocusIndex =
+      typeof focusIndex === "number" && focusIndex >= 0 && focusIndex < count
+        ? focusIndex
+        : null;
+
+    if (pitchUnits.length !== pitchLevels.length) {
+      console.warn("TwoLevelPitchGraph: pitchUnits and pitchLevels length mismatch", {
+        pitchUnits,
+        pitchLevels,
+      });
+    }
+
+    const axisWidth = 56;
+    const rightPadding = 44;
+    const minPlotWidth = 160;
+    const pointGap = 52;
+    const axisX = 28;
+    const plotStartX = axisWidth + 24;
+    const plotWidth = Math.max((count - 1) * pointGap, minPlotWidth);
+    const width = plotStartX + plotWidth + rightPadding;
+    const plotEndX = width - rightPadding;
+    const highY = 28;
+    const lowY = 78;
+    const labelY = 112;
+    const height = 126;
+    const getY = (level) => (level === "high" ? highY : lowY);
+    const getX = (index) => {
+      if (count <= 1) return plotStartX;
+      return plotStartX + (index * (plotEndX - plotStartX)) / (count - 1);
+    };
+    const getLineClass = (currentLevel, nextLevel) => {
+      if (currentLevel === nextLevel) return "level";
+      return nextLevel === "high" ? "rising" : "falling";
+    };
+    const textFill = "rgba(255, 248, 232, 0.92)";
+    const axisFill = "rgba(255, 248, 232, 0.82)";
+    const axisStroke = "rgba(255, 248, 232, 0.22)";
+    const guideStroke = "rgba(255, 248, 232, 0.08)";
+    const axisPillFill = "rgba(255, 248, 232, 0.08)";
+    const axisPillStroke = "rgba(255, 248, 232, 0.16)";
+    const focusRingColor =
+      tone === "confirm"
+        ? "rgba(255, 180, 96, 0.95)"
+        : tone === "question"
+          ? "rgba(112, 224, 207, 0.95)"
+          : tone === "statement"
+            ? "rgba(166, 196, 255, 0.95)"
+            : "rgba(255, 166, 102, 0.95)";
+
+    return (
+      <div className={`pitch-chart pitch-chart-${movement ?? "neutral"}`}>
+        <div className="pitch-chart-scroll">
+          <svg
+            className="pitch-svg"
+            width={width}
+            height={height}
+            viewBox={`0 0 ${width} ${height}`}
+            role="img"
+            aria-label="二段階ピッチグラフ"
+          >
+            <line
+              x1={axisX}
+              y1={highY - 12}
+              x2={axisX}
+              y2={lowY + 12}
+              className="pitch-axis-line"
+              stroke={axisStroke}
+              strokeWidth="1"
+              opacity="1"
+            />
+            <line
+              x1={plotStartX}
+              y1={highY}
+              x2={plotEndX}
+              y2={highY}
+              className="pitch-guide-line"
+              stroke={guideStroke}
+              strokeWidth="1"
+              opacity="1"
+            />
+            <line
+              x1={plotStartX}
+              y1={lowY}
+              x2={plotEndX}
+              y2={lowY}
+              className="pitch-guide-line"
+              stroke={guideStroke}
+              strokeWidth="1"
+              opacity="1"
+            />
+            <g transform={`translate(${axisX - 18}, ${highY - 10})`}>
+              <rect
+                width="26"
+                height="20"
+                rx="10"
+                className="pitch-axis-pill"
+                fill={axisPillFill}
+                stroke={axisPillStroke}
+                opacity="1"
+              />
+              <text
+                x="13"
+                y="14"
+                className="pitch-axis-label"
+                textAnchor="middle"
+                fill={axisFill}
+                fontSize="11"
+                fontWeight="700"
+                opacity="1"
+              >
+                上
+              </text>
+            </g>
+            <g transform={`translate(${axisX - 18}, ${lowY - 10})`}>
+              <rect
+                width="26"
+                height="20"
+                rx="10"
+                className="pitch-axis-pill"
+                fill={axisPillFill}
+                stroke={axisPillStroke}
+                opacity="1"
+              />
+              <text
+                x="13"
+                y="14"
+                className="pitch-axis-label"
+                textAnchor="middle"
+                fill={axisFill}
+                fontSize="11"
+                fontWeight="700"
+                opacity="1"
+              >
+                下
+              </text>
+            </g>
+            {safeLevels.slice(0, -1).map((level, index) => {
+              const nextLevel = safeLevels[index + 1];
+              const x1 = getX(index);
+              const x2 = getX(index + 1);
+              return (
+                <line
+                  key={`${safeUnits[index]}-${safeUnits[index + 1]}-${index}`}
+                  className={`pitch-svg-line ${getLineClass(level, nextLevel)}`}
+                  x1={x1}
+                  y1={getY(level)}
+                  x2={x2}
+                  y2={getY(nextLevel)}
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+              );
+            })}
+            {safeLevels.map((level, index) => {
+              const x = getX(index);
+              const y = getY(level);
+              const isFocused = safeFocusIndex === index;
+              return (
+                <g key={`${safeUnits[index]}-${index}`}>
+                  {isFocused && (
+                    <circle
+                      cx={x}
+                      cy={y}
+                      r="11"
+                      className="pitch-svg-focus-ring"
+                      fill="none"
+                      stroke={focusRingColor}
+                      strokeWidth="3"
+                    />
+                  )}
+                  <circle className={`pitch-svg-dot ${level}`} cx={x} cy={y} r="6.5" />
+                  <text
+                    x={x}
+                    y={labelY}
+                    className="pitch-unit-label"
+                    textAnchor="middle"
+                    fill={textFill}
+                    fontSize="14"
+                    fontWeight="700"
+                    opacity="1"
+                  >
+                    {safeUnits[index]}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+          {accent?.type === "no-drop" && (
+            <span className="pitch-no-drop-marker">○ 下がらない</span>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderPitchChart = (item) => (
+    <TwoLevelPitchGraph
+      pitchUnits={item.pitchUnits ?? item.pitchLabels}
+      pitchLevels={item.pitchLevels ?? item.pitchPattern}
+      movement={item.movement ?? item.sentenceFinal?.type}
+      focusIndex={item.sentenceFinal?.focusIndex}
+      accent={item.accent}
+      tone={item.tone}
+    />
+  );
+
+  const renderPitchMeta = (item) => {
+    if (!item.accent && !item.sentenceFinal) return null;
+
+    return (
+      <div className="pitch-meta-list">
+        {item.accent && (
+          <span className="pitch-meta">
+            {item.accent.type === "no-drop"
+              ? `${item.accent.label} / ○ 下がらない`
+              : `${item.accent.label} / 下がる`}
+          </span>
+        )}
+        {item.sentenceFinal && (
+          <span className="pitch-meta">
+            {renderLessonLabel(item.sentenceFinal.label ?? item.sentenceFinal.type)} /{" "}
+            {item.sentenceFinal.note}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  const renderLessonLabel = (label) => {
+    if (label === "平叙文") {
+      return (
+        <ruby>
+          平叙文<rt>へいじょぶん</rt>
+        </ruby>
+      );
+    }
+    if (label === "疑問文") {
+      return (
+        <ruby>
+          疑問文<rt>ぎもんぶん</rt>
+        </ruby>
+      );
+    }
+    if (label === "納得・確認") {
+      return (
+        <>
+          <ruby>
+            納得<rt>なっとく</rt>
+          </ruby>
+          ・
+          <ruby>
+            確認<rt>かくにん</rt>
+          </ruby>
+        </>
+      );
+    }
+    return label;
+  };
+
+  const renderExample = (example, exampleIndex) => {
+    const isStructuredExample = typeof example === "object" && example !== null;
+
+    return (
+      <div
+        key={exampleIndex}
+        className={`learning-example ${
+          isStructuredExample && example.tone === "danger" ? "danger-example" : ""
+        } ${
+          isStructuredExample && example.tone === "danger" && example.label !== "NG"
+            ? "danger-auto-badge"
+            : ""
+        } ${isStructuredExample && example.tone === "success" ? "success-example" : ""}`.trim()}
+      >
+        {isStructuredExample && example.label && (
+          <span className="learning-example-label">{example.label}</span>
+        )}
+        {isStructuredExample ? (example.text ?? example) : example}
+        {isStructuredExample && renderPitchChart(example)}
+        {isStructuredExample && renderPitchMeta(example)}
+        {isStructuredExample && example.meaning && (
+          <span className="learning-example-meaning">= {example.meaning}</span>
+        )}
+        {isStructuredExample && example.note && (
+          <span className="learning-example-note">{example.note}</span>
+        )}
+      </div>
+    );
+  };
+
+  const getToneFromLabel = (label) => {
+    if (label === "平叙文") return "statement";
+    if (label === "疑問文") return "question";
+    if (label === "納得・確認") return "confirm";
+    return "";
+  };
+
+  const getCategoryClassFromTone = (tone) => {
+    if (tone === "statement") return "pitch-category-statement";
+    if (tone === "question") return "pitch-category-question";
+    if (tone === "confirm") return "pitch-category-confirmation";
+    return "";
+  };
+
+  const renderComparison = (comparison, comparisonIndex) => {
+    const tone = comparison.tone ?? getToneFromLabel(comparison.label);
+    const comparisonWithTone = { ...comparison, tone };
+
+    return (
+      <div
+        key={`${comparison.label}-${comparisonIndex}`}
+        className={`pitch-comparison-card ${tone ? `${tone}-panel` : ""}`.trim()}
+      >
+        <span className={`pitch-category ${getCategoryClassFromTone(tone)}`.trim()}>
+          {renderLessonLabel(comparison.label)}
+        </span>
+        <strong>{comparison.text}</strong>
+        {renderPitchChart(comparisonWithTone)}
+        {renderPitchMeta(comparisonWithTone)}
+      </div>
+    );
+  };
+
+  const renderFlowStep = (step, stepIndex) => (
+    <article
+      key={`${step.badge ?? step.label}-${stepIndex}`}
+      className={`pitch-flow-step ${step.tone ? `pitch-flow-step-${step.tone}` : ""}`.trim()}
+    >
+      <span className="learning-example-label">{step.badge ?? step.label}</span>
+      {step.heading && <h4>{step.heading}</h4>}
+      {step.title && <strong>{step.title}</strong>}
+      {step.description && <p>{step.description}</p>}
+      {step.meaning && <span className="learning-example-meaning">= {step.meaning}</span>}
+      {step.sections && (
+        <div className="pitch-flow-section-list">
+          {step.sections.map((section) => (
+            <div key={section.label} className="pitch-flow-section">
+              <span>{section.label}</span>
+              <strong>{section.title}</strong>
+              <p>= {section.description}</p>
+            </div>
+          ))}
+        </div>
       )}
+      {step.caution && (
+        <div className="pitch-flow-caution">
+          <span>{step.caution.label}</span>
+          <strong>{step.caution.text}</strong>
+          <p>{step.caution.description}</p>
+        </div>
+      )}
+      {renderPitchChart(step)}
+      {renderPitchMeta(step)}
+      {step.note && <p className="pitch-flow-note">{step.note}</p>}
+    </article>
+  );
+
+  const renderFlowSteps = (item) => (
+    <div className="pitch-flow-list">
+      {item.flowSteps.map(renderFlowStep)}
     </div>
   );
+
+  const renderPitchMovement = (item) => {
+    if (!item.pitchPattern && !item.pitchLevels && !item.comparisons) return null;
+
+    return (
+      <div className="pitch-movement-panel">
+        {item.category && (
+          <span
+            className={`pitch-category ${
+              item.category === "納得・確認"
+                ? "pitch-category-confirmation"
+                : item.category === "疑問文"
+                  ? "pitch-category-question"
+                  : item.category === "平叙文"
+                    ? "pitch-category-statement"
+                    : ""
+            }`.trim()}
+          >
+            {renderLessonLabel(item.category)}
+          </span>
+        )}
+        {item.reading && <span className="pitch-reading">{item.reading}</span>}
+        {renderPitchChart(item)}
+        {renderPitchMeta(item)}
+        {item.comparisons && (
+          <div className="pitch-comparison-grid intonation-comparison-panels">
+            {item.comparisons.map(renderComparison)}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderLearningExamples = (item) => {
+    if (item.summaryTable) return renderSummaryTable(item.summaryTable);
+    if (item.flowSteps) return renderFlowSteps(item);
+    if (item.examples) {
+      return (
+        <div className="learning-example-list">
+          {item.examples.map(renderExample)}
+        </div>
+      );
+    }
+    if (item.example) return <div className="learning-example">{item.example}</div>;
+    return null;
+  };
+
+  const renderLearningLink = (link) => {
+    if (!link?.href) return null;
+
+    return (
+      <a
+        className="review-button reference-link-button"
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {link.label}
+      </a>
+    );
+  };
+
+  const renderChildExamples = (child) => {
+    if (child.examples) {
+      return (
+        <div className="learning-example-list">
+          {child.examples.map(renderExample)}
+        </div>
+      );
+    }
+
+    return <div className="learning-example">{child.example}</div>;
+  };
 
   const renderLearningItem = (item) => (
     <article
       key={item.id}
-      className={`learning-card learning-card-${item.id} ${item.featured ? "featured-learning-card" : ""} ${item.children ? "parent-learning-card" : ""}`.trim()}
+      className={`learning-card learning-card-${item.id} ${item.featured ? "featured-learning-card" : ""} ${item.children ? "parent-learning-card" : ""} ${item.comparisons ? "intonation-comparison-card" : ""} ${item.id === "kare-wa-gakusei-desu-pitch" || item.id === "kare-wa-gakusei-desu-ka-pitch" || item.id === "kare-wa-gakusei-desu-ka-realization" ? "intonation-stacked-card" : ""} ${item.tone === "statement" ? "statement-panel" : ""} ${item.tone === "question" ? "question-panel" : ""} ${item.tone === "confirm" ? "confirm-panel" : ""}`.trim()}
     >
       <h3>{item.title}</h3>
       <p>{item.body}</p>
@@ -51,28 +484,18 @@ function ReviewPage() {
           ))}
         </div>
       )}
-      {item.summaryTable ? (
-        renderSummaryTable(item.summaryTable)
-      ) : item.examples ? (
-        <div className="learning-example-list">
-          {item.examples.map(renderExample)}
-        </div>
-      ) : (
-        <div className="learning-example">{item.example}</div>
-      )}
+      {renderPitchMovement(item)}
+      {renderLearningExamples(item)}
+      {item.summary && <div className="learning-card-summary">{item.summary}</div>}
+      {renderLearningLink(item.link)}
       {item.children && (
         <div className="child-learning-grid">
           {item.children.map((child) => (
             <article key={child.id} className="learning-card child-learning-card">
               <h3>{child.title}</h3>
               <p>{child.body}</p>
-              {child.examples ? (
-                <div className="learning-example-list">
-                  {child.examples.map(renderExample)}
-                </div>
-              ) : (
-                <div className="learning-example">{child.example}</div>
-              )}
+              {renderPitchMovement(child)}
+              {renderChildExamples(child)}
             </article>
           ))}
         </div>
@@ -108,6 +531,14 @@ function ReviewPage() {
       </div>
     </div>
   );
+
+  const getOrderedLearningItems = (learningSection) => {
+    if (learningSection.id !== "sentence-final-intonation") return learningSection.items;
+
+    const comparisonItems = learningSection.items.filter((item) => item.comparisons);
+    const normalItems = learningSection.items.filter((item) => !item.comparisons);
+    return [...comparisonItems, ...normalItems];
+  };
 
   return (
     <main className="review-app review-page">
@@ -155,7 +586,7 @@ function ReviewPage() {
             {session.learningSections.map((learningSection) => (
               <section
                 key={learningSection.id}
-                className={`learning-section-card ${learningSection.layout ?? ""}`.trim()}
+                className={`learning-section-card learning-section-${learningSection.id} ${learningSection.layout ?? ""}`.trim()}
               >
                 <div className="learning-section-header">
                   <div>
@@ -180,8 +611,18 @@ function ReviewPage() {
                   </div>
                 )}
 
-                <div className="learning-grid">
-                  {learningSection.items.map(renderLearningItem)}
+                <div
+                  className={`learning-grid ${
+                    learningSection.id === "sentence-final-intonation"
+                      ? "sentence-final-grid"
+                      : learningSection.id === "pitch-core"
+                        ? "pronunciation-core-grid"
+                        : learningSection.id === "word-pitch"
+                          ? "word-pitch-grid"
+                      : ""
+                  }`.trim()}
+                >
+                  {getOrderedLearningItems(learningSection).map(renderLearningItem)}
                 </div>
               </section>
             ))}

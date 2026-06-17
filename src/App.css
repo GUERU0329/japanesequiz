@@ -51,6 +51,10 @@
 
   --overlay: rgba(15, 23, 42, 0.78);
   --button-focus: rgba(84, 132, 255, 0.34);
+  --pitch-text: rgba(49, 65, 57, 0.94);
+  --pitch-muted: rgba(49, 65, 57, 0.72);
+  --pitch-axis: rgba(49, 65, 57, 0.68);
+  --pitch-badge-text: rgba(49, 65, 57, 0.94);
 }
 
 
@@ -3222,6 +3226,185 @@ rt {
   grid-column: 1 / -1;
 }
 
+.learning-section-pitch-core .pronunciation-core-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.learning-section-pitch-core .featured-learning-card {
+  grid-column: 1 / -1;
+}
+
+.learning-section-word-pitch .word-pitch-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.learning-section-accent-dictionary .learning-grid {
+  grid-template-columns: 1fr;
+}
+
+.learning-section-accent-dictionary .learning-card {
+  border-color: rgba(125, 216, 203, 0.22);
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.reference-link-button {
+  width: fit-content;
+  margin-top: 4px;
+  text-decoration: none;
+}
+
+.learning-example-note {
+  display: block;
+  margin-top: 8px;
+  color: rgba(255, 248, 232, 0.78);
+  opacity: 1;
+  font-size: 0.92rem;
+  font-weight: 760;
+  line-height: 1.75;
+}
+
+.learning-example-note ruby {
+  color: rgba(255, 248, 232, 0.82);
+}
+
+.learning-example-note rt {
+  color: rgba(255, 210, 150, 0.72);
+  font-size: 0.62em;
+  font-weight: 700;
+}
+
+.learning-card-summary {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(240, 163, 111, 0.24);
+  border-radius: 14px;
+  color: rgba(255, 248, 232, 0.94);
+  font-weight: 900;
+  line-height: 1.7;
+  background: rgba(240, 163, 111, 0.12);
+}
+
+.pitch-flow-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.pitch-flow-step {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid rgba(255, 248, 232, 0.12);
+  border-radius: 16px;
+  color: rgba(255, 248, 232, 0.92);
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.pitch-flow-step h4 {
+  margin: 0;
+  color: rgba(255, 248, 232, 0.96);
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+.pitch-flow-step strong {
+  color: rgba(255, 248, 232, 0.96);
+  font-size: 1.16rem;
+}
+
+.pitch-flow-step p {
+  margin: 0;
+  color: rgba(255, 248, 232, 0.82);
+  line-height: 1.7;
+}
+
+.pitch-flow-step-danger,
+.pitch-flow-step-warning {
+  border-color: rgba(255, 120, 140, 0.35);
+}
+
+.pitch-flow-step-danger .learning-example-label,
+.pitch-flow-step-warning .learning-example-label {
+  color: rgba(255, 248, 232, 0.95);
+  background: rgba(255, 120, 140, 0.2);
+}
+
+.pitch-flow-step-success {
+  border-color: rgba(112, 224, 207, 0.32);
+}
+
+.pitch-flow-step-success .learning-example-label {
+  color: rgba(255, 248, 232, 0.95);
+  background: rgba(112, 224, 207, 0.18);
+}
+
+.pitch-flow-section-list {
+  display: grid;
+  gap: 10px;
+}
+
+.pitch-flow-section {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border: 1px solid rgba(255, 248, 232, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.pitch-flow-section span {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: rgba(255, 248, 232, 0.9);
+  font-size: 0.72rem;
+  font-weight: 950;
+  background: rgba(255, 248, 232, 0.08);
+}
+
+.pitch-flow-step-danger .pitch-flow-section + .pitch-flow-section {
+  border-color: rgba(255, 120, 140, 0.28);
+}
+
+.pitch-flow-step-danger .pitch-flow-section + .pitch-flow-section span {
+  background: rgba(255, 120, 140, 0.2);
+}
+
+.pitch-flow-caution {
+  display: grid;
+  gap: 6px;
+  margin-top: 2px;
+  padding: 12px;
+  border: 1px solid rgba(233, 129, 148, 0.34);
+  border-radius: 14px;
+  background: rgba(233, 129, 148, 0.14);
+}
+
+.pitch-flow-caution span {
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: #8f2338;
+  font-size: 0.72rem;
+  font-weight: 950;
+  background: rgba(233, 129, 148, 0.2);
+}
+
+.pitch-flow-caution strong {
+  color: #8f2338;
+  font-size: 1rem;
+}
+
+.pitch-flow-note {
+  color: rgba(255, 248, 232, 0.82);
+  font-size: 0.86rem;
+  font-weight: 760;
+}
+
 .learning-card-class-7-contempt {
   grid-column: 1 / -1;
 }
@@ -3392,6 +3575,470 @@ rt {
   color: #17221b;
   font-weight: 800;
   line-height: 1.7;
+}
+
+.pitch-movement-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.pitch-category {
+  display: inline-flex;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 999px;
+  color: #1f6f68;
+  font-size: 0.78rem;
+  font-weight: 900;
+  background: #e7f1e6;
+}
+
+.pitch-category-question {
+  color: #1f6f68;
+  background: rgba(125, 216, 203, 0.18);
+}
+
+.pitch-category-statement {
+  color: #405e9f;
+  background: rgba(166, 196, 255, 0.16);
+}
+
+.pitch-category-confirmation {
+  color: #9c5a1d;
+  background: rgba(240, 163, 111, 0.18);
+}
+
+.learning-card-kare-wa-gakusei-desu-ka-realization {
+  border-color: rgba(240, 163, 111, 0.24);
+  box-shadow: inset 0 1px 0 rgba(240, 163, 111, 0.08);
+}
+
+.statement-panel,
+.question-panel,
+.confirm-panel {
+  color: rgba(255, 248, 232, 0.92);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.statement-panel {
+  border: 1px solid rgba(166, 196, 255, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 0 0 1px rgba(166, 196, 255, 0.04),
+    0 16px 40px rgba(166, 196, 255, 0.08);
+}
+
+.question-panel {
+  border: 1px solid rgba(112, 224, 207, 0.36);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 0 0 1px rgba(112, 224, 207, 0.04),
+    0 16px 40px rgba(112, 224, 207, 0.08);
+}
+
+.confirm-panel {
+  border: 1px solid rgba(255, 180, 96, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 0 0 1px rgba(255, 180, 96, 0.04),
+    0 16px 40px rgba(255, 180, 96, 0.08);
+}
+
+.statement-panel .pitch-category {
+  color: rgba(228, 236, 255, 0.96);
+  border: 1px solid rgba(166, 196, 255, 0.28);
+  background: rgba(166, 196, 255, 0.16);
+}
+
+.question-panel .pitch-category {
+  color: rgba(215, 255, 249, 0.96);
+  border: 1px solid rgba(112, 224, 207, 0.28);
+  background: rgba(112, 224, 207, 0.18);
+}
+
+.confirm-panel .pitch-category {
+  color: rgba(255, 232, 198, 0.96);
+  border: 1px solid rgba(255, 180, 96, 0.32);
+  background: rgba(255, 180, 96, 0.2);
+}
+
+.statement-panel h3,
+.question-panel h3,
+.confirm-panel h3 {
+  color: rgba(255, 248, 232, 0.96);
+}
+
+.statement-panel p,
+.question-panel p,
+.confirm-panel p {
+  color: rgba(255, 248, 232, 0.76);
+}
+
+.statement-panel .pitch-chart {
+  border-color: rgba(166, 196, 255, 0.24);
+}
+
+.question-panel .pitch-chart {
+  border-color: rgba(112, 224, 207, 0.26);
+}
+
+.confirm-panel .pitch-chart {
+  border-color: rgba(255, 180, 96, 0.28);
+}
+
+.pitch-reading {
+  color: var(--pitch-text);
+  font-size: 1.12rem;
+  font-weight: 900;
+}
+
+.pitch-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pitch-meta {
+  display: inline-flex;
+  width: fit-content;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: var(--pitch-badge-text);
+  font-size: 0.76rem;
+  font-weight: 900;
+  background: rgba(240, 163, 111, 0.16);
+}
+
+.pitch-chart {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px 12px;
+  overflow: hidden;
+  border: 1px solid rgba(45, 63, 50, 0.14);
+  border-radius: 16px;
+  background: rgba(34, 46, 42, 0.08);
+  user-select: none;
+}
+
+.pitch-chart-levels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 58px;
+  padding: 0;
+  color: var(--pitch-axis);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.pitch-chart-scroll {
+  position: relative;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 8px 32px;
+  padding-inline: 4px;
+  scrollbar-width: none;
+}
+
+.pitch-chart-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.pitch-chart-steps {
+  position: relative;
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  min-height: 82px;
+  padding: 0 4px;
+}
+
+.pitch-svg {
+  display: block;
+  min-width: 100%;
+  overflow: hidden;
+  color: var(--pitch-text);
+  opacity: 1;
+}
+
+.pitch-axis-label {
+  fill: rgba(255, 248, 232, 0.68);
+  color: rgba(255, 248, 232, 0.68);
+  font-weight: 700;
+  opacity: 1;
+}
+
+.pitch-axis-line {
+  stroke: rgba(255, 248, 232, 0.22);
+  opacity: 1;
+}
+
+.pitch-guide-line {
+  stroke: rgba(255, 248, 232, 0.08);
+  opacity: 1;
+}
+
+.pitch-axis-pill {
+  fill: rgba(255, 248, 232, 0.08);
+  stroke: rgba(255, 248, 232, 0.16);
+  opacity: 1;
+}
+
+.pitch-unit-label {
+  fill: rgba(255, 248, 232, 0.92);
+  color: rgba(255, 248, 232, 0.92);
+  font-weight: 700;
+  opacity: 1;
+}
+
+.danger-example {
+  border-color: rgba(233, 129, 148, 0.42);
+  background: linear-gradient(135deg, rgba(233, 129, 148, 0.18), rgba(255, 250, 240, 0.62));
+  box-shadow: 0 0 0 1px rgba(233, 129, 148, 0.08), 0 14px 30px rgba(126, 33, 52, 0.12);
+}
+
+.danger-auto-badge::before {
+  content: "NG";
+  display: inline-flex;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: #8f2338;
+  font-size: 0.72rem;
+  font-weight: 950;
+  background: rgba(233, 129, 148, 0.2);
+}
+
+.danger-example .learning-example-label {
+  color: #8f2338;
+  background: rgba(233, 129, 148, 0.18);
+}
+
+.danger-example .pitch-chart {
+  border-color: rgba(233, 129, 148, 0.35);
+  background: rgba(126, 33, 52, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(233, 129, 148, 0.08);
+}
+
+.danger-example .pitch-svg-line.rising {
+  stroke: #e98194;
+}
+
+.danger-example .pitch-svg-dot {
+  fill: #e98194;
+}
+
+.danger-example .pitch-svg-dot.low {
+  fill: #f0a36f;
+}
+
+.danger-example .pitch-svg-focus-ring {
+  stroke: rgba(233, 129, 148, 0.86);
+  filter: drop-shadow(0 0 8px rgba(233, 129, 148, 0.58));
+}
+
+.success-example {
+  border-color: rgba(125, 216, 203, 0.34);
+  background: linear-gradient(135deg, rgba(125, 216, 203, 0.14), rgba(255, 250, 240, 0.62));
+  box-shadow: 0 0 0 1px rgba(125, 216, 203, 0.08), 0 14px 30px rgba(31, 111, 104, 0.1);
+}
+
+.success-example .learning-example-label {
+  color: #1f6f68;
+  background: rgba(125, 216, 203, 0.18);
+}
+
+.success-example .pitch-chart {
+  border-color: rgba(125, 216, 203, 0.3);
+  background: rgba(31, 111, 104, 0.1);
+}
+
+.pitch-svg-line {
+  stroke: #d89a47;
+}
+
+.pitch-svg-line.rising {
+  stroke: #43a878;
+}
+
+.pitch-svg-line.falling {
+  stroke: #d86a7a;
+}
+
+.pitch-svg-dot {
+  fill: #1f6f68;
+  stroke: rgba(255, 252, 245, 0.72);
+  stroke-width: 3;
+}
+
+.pitch-svg-dot.low {
+  fill: #d86a7a;
+}
+
+.pitch-svg-focus-ring {
+  stroke: rgba(240, 163, 111, 0.72);
+  filter: drop-shadow(0 0 7px rgba(240, 163, 111, 0.52));
+}
+
+.pitch-chart-step {
+  position: relative;
+  display: grid;
+  grid-template-rows: 26px 26px 24px;
+  align-items: center;
+  justify-items: center;
+  width: 52px;
+  flex: 0 0 52px;
+}
+
+.pitch-chart-step.focused .pitch-dot {
+  box-shadow:
+    0 0 0 4px rgba(240, 163, 111, 0.28),
+    0 0 18px rgba(240, 163, 111, 0.44);
+}
+
+.pitch-dot {
+  z-index: 1;
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 3px rgba(255, 252, 245, 0.72);
+  background: #1f6f68;
+}
+
+.pitch-dot.high {
+  grid-row: 1;
+}
+
+.pitch-dot.low {
+  grid-row: 2;
+  background: #d86a7a;
+}
+
+.pitch-line {
+  position: absolute;
+  left: calc(50% + 9px);
+  width: calc(100% - 18px);
+  height: 3px;
+  border-radius: 999px;
+  background: #d89a47;
+  transform-origin: left center;
+}
+
+.pitch-line.level {
+  top: 13px;
+}
+
+.pitch-dot.low + .pitch-line.level {
+  top: 39px;
+}
+
+.pitch-line.rising {
+  top: 38px;
+  background: #43a878;
+  transform: rotate(-24deg);
+}
+
+.pitch-line.falling {
+  top: 16px;
+  background: #d86a7a;
+  transform: rotate(24deg);
+}
+
+.pitch-no-drop-marker {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: var(--pitch-badge-text);
+  font-size: 0.72rem;
+  font-weight: 950;
+  background: rgba(125, 216, 203, 0.26);
+  opacity: 1;
+}
+
+.pitch-label {
+  grid-row: 3;
+  align-self: end;
+  color: var(--pitch-text);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pitch-comparison-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.intonation-comparison-panels {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pitch-comparison-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(45, 63, 50, 0.1);
+  border-radius: 14px;
+  background: rgba(231, 241, 230, 0.38);
+}
+
+.pitch-comparison-card strong {
+  color: #17221b;
+  font-size: 1rem;
+}
+
+.pitch-comparison-card.statement-panel,
+.pitch-comparison-card.question-panel,
+.pitch-comparison-card.confirm-panel {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.pitch-comparison-card.statement-panel strong,
+.pitch-comparison-card.question-panel strong,
+.pitch-comparison-card.confirm-panel strong {
+  color: rgba(255, 248, 232, 0.96);
+  font-size: 1.08rem;
+  line-height: 1.6;
+}
+
+.pitch-comparison-card.statement-panel .pitch-meta,
+.pitch-comparison-card.question-panel .pitch-meta,
+.pitch-comparison-card.confirm-panel .pitch-meta {
+  color: rgba(255, 248, 232, 0.78);
+}
+
+.learning-section-sentence-final-intonation .sentence-final-grid {
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.learning-section-sentence-final-intonation .intonation-comparison-card,
+.learning-section-sentence-final-intonation .intonation-stacked-card {
+  grid-column: 1 / -1;
+}
+
+.learning-section-sentence-final-intonation .intonation-comparison-card .pitch-chart {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .learning-section-word-pitch .word-pitch-grid,
+  .learning-section-pitch-core .pronunciation-core-grid,
+  .learning-section-sentence-final-intonation .sentence-final-grid,
+  .intonation-comparison-panels {
+    grid-template-columns: 1fr;
+  }
 }
 
 .learning-summary-table {
@@ -3654,6 +4301,11 @@ rt {
 }
 
 .dark .review-app {
+  --pitch-text: rgba(255, 248, 232, 0.92);
+  --pitch-muted: rgba(255, 248, 232, 0.74);
+  --pitch-axis: rgba(255, 248, 232, 0.68);
+  --pitch-badge-text: rgba(255, 248, 232, 0.95);
+
   background:
     linear-gradient(90deg, rgba(125, 216, 203, 0.06) 1px, transparent 1px),
     linear-gradient(180deg, rgba(125, 216, 203, 0.06) 1px, transparent 1px),
@@ -3753,6 +4405,292 @@ rt {
 
 .dark .quick-point-value {
   color: #f7eddc;
+}
+
+.dark .learning-section-accent-dictionary .learning-card {
+  border-color: rgba(125, 216, 203, 0.24);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.dark .pitch-category {
+  color: #10211f;
+  background: #7dd8cb;
+}
+
+.dark .pitch-category-question {
+  color: #d9fffa;
+  background: rgba(125, 216, 203, 0.18);
+}
+
+.dark .pitch-category-statement {
+  color: #e4ecff;
+  background: rgba(166, 196, 255, 0.16);
+}
+
+.dark .pitch-category-confirmation {
+  color: #ffe4c6;
+  background: rgba(240, 163, 111, 0.2);
+}
+
+.dark .learning-card-kare-wa-gakusei-desu-ka-realization {
+  border-color: rgba(240, 163, 111, 0.3);
+  box-shadow: inset 0 1px 0 rgba(240, 163, 111, 0.1);
+}
+
+.dark .statement-panel,
+.dark .question-panel,
+.dark .confirm-panel {
+  color: rgba(255, 248, 232, 0.92);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.dark .statement-panel {
+  border-color: rgba(166, 196, 255, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 0 0 1px rgba(166, 196, 255, 0.04),
+    0 16px 40px rgba(166, 196, 255, 0.08);
+}
+
+.dark .question-panel {
+  border-color: rgba(112, 224, 207, 0.36);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 0 0 1px rgba(112, 224, 207, 0.04),
+    0 16px 40px rgba(112, 224, 207, 0.08);
+}
+
+.dark .confirm-panel {
+  border-color: rgba(255, 180, 96, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 0 0 1px rgba(255, 180, 96, 0.04),
+    0 16px 40px rgba(255, 180, 96, 0.08);
+}
+
+.dark .statement-panel .pitch-category {
+  color: rgba(228, 236, 255, 0.96);
+  border: 1px solid rgba(166, 196, 255, 0.28);
+  background: rgba(166, 196, 255, 0.16);
+}
+
+.dark .question-panel .pitch-category {
+  color: rgba(215, 255, 249, 0.96);
+  border: 1px solid rgba(112, 224, 207, 0.28);
+  background: rgba(112, 224, 207, 0.18);
+}
+
+.dark .confirm-panel .pitch-category {
+  color: rgba(255, 232, 198, 0.96);
+  border: 1px solid rgba(255, 180, 96, 0.32);
+  background: rgba(255, 180, 96, 0.2);
+}
+
+.dark .statement-panel h3,
+.dark .question-panel h3,
+.dark .confirm-panel h3 {
+  color: rgba(255, 248, 232, 0.96);
+}
+
+.dark .statement-panel p,
+.dark .question-panel p,
+.dark .confirm-panel p {
+  color: rgba(255, 248, 232, 0.76);
+}
+
+.dark .pitch-reading {
+  color: var(--pitch-text);
+}
+
+.dark .pitch-meta {
+  color: var(--pitch-badge-text);
+  background: rgba(240, 163, 111, 0.26);
+}
+
+.dark .pitch-chart {
+  border-color: rgba(255, 244, 224, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.dark .pitch-chart-levels {
+  color: var(--pitch-axis);
+}
+
+.dark .pitch-dot {
+  box-shadow: 0 0 0 3px rgba(19, 32, 30, 0.92);
+  background: #7dd8cb;
+}
+
+.dark .pitch-dot.low {
+  background: #e98194;
+}
+
+.dark .pitch-axis-label {
+  fill: rgba(255, 248, 232, 0.82);
+  color: rgba(255, 248, 232, 0.82);
+}
+
+.dark .pitch-axis-line {
+  stroke: rgba(255, 248, 232, 0.22);
+}
+
+.dark .pitch-guide-line {
+  stroke: rgba(255, 248, 232, 0.08);
+}
+
+.dark .pitch-axis-pill {
+  fill: rgba(255, 248, 232, 0.08);
+  stroke: rgba(255, 248, 232, 0.16);
+}
+
+.dark .pitch-unit-label {
+  fill: rgba(255, 248, 232, 0.92);
+  color: rgba(255, 248, 232, 0.92);
+}
+
+.dark .pitch-svg-dot {
+  fill: #7dd8cb;
+  stroke: rgba(19, 32, 30, 0.92);
+}
+
+.dark .pitch-svg-dot.low {
+  fill: #e98194;
+}
+
+.dark .pitch-svg-line.level {
+  stroke: #d8a552;
+}
+
+.dark .pitch-svg-line.rising {
+  stroke: #6ed7a2;
+}
+
+.dark .pitch-svg-line.falling {
+  stroke: #e98194;
+}
+
+.dark .pitch-svg-focus-ring {
+  stroke: rgba(240, 163, 111, 0.82);
+}
+
+.dark .danger-example {
+  border-color: rgba(233, 129, 148, 0.42);
+  background: linear-gradient(135deg, rgba(126, 33, 52, 0.34), rgba(255, 244, 224, 0.06));
+  box-shadow: 0 0 0 1px rgba(233, 129, 148, 0.1), 0 16px 34px rgba(0, 0, 0, 0.2);
+}
+
+.dark .danger-auto-badge::before {
+  color: #ffdce2;
+  background: rgba(233, 129, 148, 0.24);
+}
+
+.dark .danger-example .learning-example-label {
+  color: #ffdce2;
+  background: rgba(233, 129, 148, 0.2);
+}
+
+.dark .danger-example .pitch-chart {
+  border-color: rgba(233, 129, 148, 0.38);
+  background: rgba(126, 33, 52, 0.22);
+}
+
+.dark .danger-example .pitch-svg-line.rising {
+  stroke: #ff8ca0;
+}
+
+.dark .danger-example .pitch-svg-dot {
+  fill: #ff8ca0;
+}
+
+.dark .danger-example .pitch-svg-dot.low {
+  fill: #f0a36f;
+}
+
+.dark .pitch-flow-step {
+  border-color: rgba(255, 244, 224, 0.12);
+  background: rgba(255, 255, 255, 0.045);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark .pitch-flow-step h4,
+.dark .pitch-flow-step strong,
+.dark .pitch-flow-caution strong {
+  color: rgba(255, 248, 232, 0.96);
+}
+
+.dark .pitch-flow-step p {
+  color: rgba(255, 248, 232, 0.82);
+}
+
+.dark .pitch-flow-step-danger,
+.dark .pitch-flow-step-warning {
+  border-color: rgba(255, 120, 140, 0.35);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.dark .pitch-flow-step-danger .learning-example-label,
+.dark .pitch-flow-step-warning .learning-example-label,
+.dark .pitch-flow-caution span {
+  color: rgba(255, 248, 232, 0.95);
+  background: rgba(255, 120, 140, 0.2);
+}
+
+.dark .pitch-flow-step-success {
+  border-color: rgba(112, 224, 207, 0.32);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.dark .pitch-flow-step-success .learning-example-label {
+  color: rgba(255, 248, 232, 0.95);
+  background: rgba(125, 216, 203, 0.18);
+}
+
+.dark .pitch-flow-caution {
+  border-color: rgba(233, 129, 148, 0.34);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.dark .success-example {
+  border-color: rgba(125, 216, 203, 0.36);
+  background: linear-gradient(135deg, rgba(31, 111, 104, 0.28), rgba(255, 244, 224, 0.06));
+  box-shadow: 0 0 0 1px rgba(125, 216, 203, 0.1), 0 16px 34px rgba(0, 0, 0, 0.18);
+}
+
+.dark .success-example .learning-example-label {
+  color: #d9fffa;
+  background: rgba(125, 216, 203, 0.18);
+}
+
+.dark .success-example .pitch-chart {
+  border-color: rgba(125, 216, 203, 0.36);
+  background: rgba(31, 111, 104, 0.2);
+}
+
+.dark .pitch-line.level {
+  background: #d8a552;
+}
+
+.dark .pitch-line.rising {
+  background: #6ed7a2;
+}
+
+.dark .pitch-line.falling {
+  background: #e98194;
+}
+
+.dark .pitch-no-drop-marker {
+  color: var(--pitch-badge-text);
+  background: rgba(125, 216, 203, 0.28);
+}
+
+.dark .pitch-label,
+.dark .pitch-comparison-card strong {
+  color: var(--pitch-text);
+}
+
+.dark .pitch-comparison-card {
+  border-color: rgba(255, 244, 224, 0.12);
+  background: rgba(125, 216, 203, 0.08);
 }
 
 .dark .child-learning-card {
