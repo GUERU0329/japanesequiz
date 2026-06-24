@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import dailyLessons from "../data/dailyLessons.jsx";
 import quizMeta from "../data/quizMeta.jsx";
 
 function ReviewPage() {
   const { sessionId } = useParams();
+  const [selectedAnswers, setSelectedAnswers] = useState({});
   const session = dailyLessons.find((item) => item.id === sessionId);
 
   if (!session) {
@@ -467,13 +469,88 @@ function ReviewPage() {
     return <div className="learning-example">{child.example}</div>;
   };
 
+  const getQuestionTypeLabel = (question) => {
+    if (question.type === "fill-blank") return "空欄補充";
+    return question.skill ?? "内容確認";
+  };
+
+  const renderPassageQuestions = (passageQuestions) => {
+    if (!passageQuestions?.questions?.length) return null;
+
+    return (
+      <section className="reading-check-card">
+        <div className="reading-check-header">
+          <span>Reading Check</span>
+          <h4>{passageQuestions.title}</h4>
+        </div>
+        <div className="reading-question-list">
+          {passageQuestions.questions.map((question, questionIndex) => (
+            (() => {
+              const questionKey = `${passageQuestions.title}-${questionIndex}`;
+              const selectedIndex = selectedAnswers[questionKey] ?? null;
+              const answered = selectedIndex !== null;
+
+              return (
+                <article key={questionKey} className="reading-question-card">
+                  <div className="reading-question-meta">
+                    <span className="reading-question-number">{questionIndex + 1}</span>
+                    <span className="reading-question-type">{getQuestionTypeLabel(question)}</span>
+                  </div>
+                  <p className="reading-question-prompt">{question.prompt}</p>
+                  <div className="reading-choice-grid">
+                    {question.choices.map((choice, choiceIndex) => {
+                      const isCorrect = answered && choiceIndex === question.answerIndex;
+                      const isIncorrect =
+                        answered &&
+                        choiceIndex === selectedIndex &&
+                        selectedIndex !== question.answerIndex;
+
+                      return (
+                        <button
+                          type="button"
+                          key={`${questionIndex}-${choiceIndex}`}
+                          className={`reading-choice ${isCorrect ? "is-correct" : ""} ${
+                            isIncorrect ? "is-incorrect" : ""
+                          } ${answered && choiceIndex === selectedIndex ? "is-selected" : ""}`.trim()}
+                          onClick={() =>
+                            setSelectedAnswers((current) => ({
+                              ...current,
+                              [questionKey]: choiceIndex,
+                            }))
+                          }
+                        >
+                          <span>{choiceIndex + 1}</span>
+                          <p>{choice}</p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {answered && (
+                    <div className="reading-explanation">
+                      <strong>{selectedIndex === question.answerIndex ? "正解" : "解説"}</strong>
+                      <p>{question.explanation}</p>
+                    </div>
+                  )}
+                </article>
+              );
+            })()
+          ))}
+        </div>
+      </section>
+    );
+  };
+
   const renderLearningItem = (item) => (
     <article
       key={item.id}
       className={`learning-card learning-card-${item.id} ${item.featured ? "featured-learning-card" : ""} ${item.children ? "parent-learning-card" : ""} ${item.comparisons ? "intonation-comparison-card" : ""} ${item.id === "kare-wa-gakusei-desu-pitch" || item.id === "kare-wa-gakusei-desu-ka-pitch" || item.id === "kare-wa-gakusei-desu-ka-realization" ? "intonation-stacked-card" : ""} ${item.tone === "statement" ? "statement-panel" : ""} ${item.tone === "question" ? "question-panel" : ""} ${item.tone === "confirm" ? "confirm-panel" : ""}`.trim()}
     >
       <h3>{item.title}</h3>
-      <p>{item.body}</p>
+      {item.bodyAsBlock ? (
+        <div className="learning-card-body">{item.body}</div>
+      ) : (
+        <p>{item.body}</p>
+      )}
       {item.quickPoints && (
         <div className="quick-points-grid">
           {item.quickPoints.map((point) => (
@@ -486,6 +563,7 @@ function ReviewPage() {
       )}
       {renderPitchMovement(item)}
       {renderLearningExamples(item)}
+      {renderPassageQuestions(item.passageQuestions)}
       {item.summary && <div className="learning-card-summary">{item.summary}</div>}
       {renderLearningLink(item.link)}
       {item.children && (
